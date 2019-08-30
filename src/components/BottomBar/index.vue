@@ -30,7 +30,8 @@ export default {
   display: flex; 
   justify-content: space-around;
   padding: 5px 0;
-  box-shadow:0 -1px 1px #e8e8e8;
+  background: #fff;
+  box-shadow:0 -1px -2px #e8e8e8;
   .item {
     display: flex;
     flex-direction: column;
