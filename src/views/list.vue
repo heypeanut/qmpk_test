@@ -1,7 +1,12 @@
 <template>
   <div class="list-wrapper">
     <ul class="list">
-      <li class="item" v-for="item in videoList" :key="item.id">
+      <li 
+        class="item" 
+        v-for="item in videoList" 
+        :key="item.id"
+        @click="selectItem(item)"
+        >
         <div class="cover">
           <img :src="item.cover" alt="">
           <span class="time">{{item.videoTime.videoTime}}</span>
@@ -19,16 +24,38 @@
 <script>
 import { getVideoList } from '@/api/list'
 import {createVideo} from '@/common/js/video'
+import { mapGetters,mapMutations,mapActions } from 'vuex'
 export default {
   data(){
     return {
       videoList:[]
     }
   },
+  computed:{
+    ...mapGetters([
+      'video',
+      ''
+    ])
+  },
   created(){
     this._getVideoList() 
   },
   methods:{
+    selectItem(video){
+      // console.log(video)
+      //当前点击视频对象
+      this.setVideo(video)
+      //原始视频列表
+      this.setVideoList(this.videoList)
+      //需要处理的推荐列表
+      this.setRecommendListActions({list:this.videoList,currentVideo:video})
+      // console.log(this.recommendList)
+      //跳转至视频详情页
+      this.$router.push({
+        path:'/video-details',
+        // query:video
+      })
+    },
     winner(team,winner){
       return team === winner?team+'(胜)':team
     },
@@ -41,13 +68,21 @@ export default {
           res.data.forEach(video=>{
             ret.push(createVideo(video))
           })
-          console.log(ret)
+          // console.log(ret)
           this.videoList = ret
         }else{
           alert('请求失败')
         }
       })
-    }
+    },
+    ...mapMutations({
+      setVideo:'SET_VIDEO',
+      setVideoList:'SET_VIDEO_LIST',
+      setRecommendList:'SET_RECOMMEND_LIST'
+    }),
+    ...mapActions({
+      setRecommendListActions:'recommendListAction'
+    })
   }
 }
 </script>

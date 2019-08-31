@@ -1,0 +1,6 @@
+export const SET_VIDEO = 'SET_VIDEO'
+
+export const SET_VIDEO_LIST = 'SET_VIDEO_LIST'
+
+
+export const SET_RECOMMEND_LIST = 'SET_RECOMMEND_LIST'
